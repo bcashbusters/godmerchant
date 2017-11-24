@@ -44,7 +44,10 @@ class OfferPerformance extends React.Component {
                 {name: 'Week 5', Users: 1890, ROI: 4800, amt: 2181},
                 {name: 'Week 6', Users: 2390, ROI: 3800, amt: 2500},
                 {name: 'Week 7', Users: 3490, ROI: 4300, amt: 2100},
-            ]
+            ],
+            slider: {
+                value: 200
+            }
         }
     }
 
@@ -52,7 +55,10 @@ class OfferPerformance extends React.Component {
         const slVal = Math.ceil(1000/value/2);
         const changedData =  dataList[slVal] ? dataList[slVal] : dataList['default'];
         this.setState({
-            data: changedData
+            data: changedData,
+            slider: {
+                value: value
+            }
         });
     }
 
@@ -81,14 +87,24 @@ class OfferPerformance extends React.Component {
                 <Card>
                     <CardContent>
                         <div style={{width: '100%'}}>
-                            <Typography type="body1" component="h2">
-                                <strong>Plan Your Investment</strong>
+                            <Typography type="headline" component="h2" style={{color: '#999'}}>
+                                Plan Your Investment
                             </Typography>
                             <br/>
                             <br/>
                         </div>
+                        <div style={{width: '600px', margin: 'auto'}}>
                         <Slider min={0} max={1000} defaultValue={200} handle={this.handle} onChange={(value)=>{this.handleChangeValue(value)}}/>
+                        </div>
+                        <Typography type="body1" component="h2">
+                            Invest: <strong>${this.state.slider.value}k</strong>
+                        </Typography>
+                        <br/>
+                        <br/>
 
+                        <Typography type="body1" component="h2">
+                            Weekly User engagement and ROI analysis
+                        </Typography>
                         <br/>
                         <br/>
                         <LineChart width={600} height={300} data={this.state.data}

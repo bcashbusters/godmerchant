@@ -68,9 +68,9 @@ class Header extends Component {
               </ListItem>
           </Link>
         <Divider />
-          <Link to="asum" style={{ textDecoration: 'none' }}>
+          <Link to="plan" style={{ textDecoration: 'none' }}>
             <ListItem button>
-              <ListItemText primary="Statements" />
+              <ListItemText primary="Investment Plan" />
             </ListItem>
           </Link>
         </List>

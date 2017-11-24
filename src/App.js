@@ -7,6 +7,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import createPalette from 'material-ui/styles/createPalette'
 import createMuiTheme from 'material-ui/styles/createMuiTheme'
 import {blue, amber, red} from 'material-ui/colors';
+import OfferConfig from "./components/offerConfig/index";
 
 
 const muiTheme = createMuiTheme({
@@ -27,7 +28,8 @@ class App extends Component {
                         <div>
                             <Header />
                             <Switch>
-                                <Route path='/' exact component={OfferPerformance} />
+                                <Route path='/' exact component={OfferConfig} />
+                                <Route path='/plan' exact component={OfferPerformance} />
                             </Switch>
                         </div>
                     </BrowserRouter>
