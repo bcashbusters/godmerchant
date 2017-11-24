@@ -3,7 +3,14 @@ import { withStyles } from 'material-ui/styles';
 import Card, { CardContent } from 'material-ui/Card';
 import Divider from 'material-ui/Divider';
 import Typography from 'material-ui/Typography';
-import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
+import {LineChart, Line, XAxis, YAxis, CartesianGrid, Legend} from 'recharts';
+import * as Recharts from 'recharts';
+
+import 'rc-tooltip/assets/bootstrap.css';
+import 'rc-slider/assets/index.css';
+import Slider from 'rc-slider';
+import Tooltip from 'rc-tooltip';
+import dataList from './offerDataSampling';
 
 const styles = theme => ({
     card: {
@@ -25,49 +32,84 @@ const styles = theme => ({
     },
 });
 
-function OfferPerformance(props) {
-    const { classes } = props;
-    const data = [
-        {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
-        {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-        {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-        {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-        {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-        {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-        {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
-    ];
+class OfferPerformance extends React.Component {
+    constructor(){
+        super();
+        this.state = {
+            data : [
+                {name: 'Week 1', Users: 4000, ROI: 2400, amt: 2400},
+                {name: 'Week 2', Users: 3000, ROI: 1398, amt: 2210},
+                {name: 'Week 3', Users: 2000, ROI: 9800, amt: 2290},
+                {name: 'Week 4', Users: 2780, ROI: 3908, amt: 2000},
+                {name: 'Week 5', Users: 1890, ROI: 4800, amt: 2181},
+                {name: 'Week 6', Users: 2390, ROI: 3800, amt: 2500},
+                {name: 'Week 7', Users: 3490, ROI: 4300, amt: 2100},
+            ]
+        }
+    }
+
+    handleChangeValue(value){
+        const slVal = Math.ceil(1000/value/2);
+        const changedData =  dataList[slVal] ? dataList[slVal] : dataList['default'];
+        this.setState({
+            data: changedData
+        });
+    }
+
+    handle(props) {
+        const Handle = Slider.Handle;
+        const { value, dragging, index, ...restProps } = props;
+
+        return (
+            <Tooltip
+                prefixCls="rc-slider-tooltip"
+                overlay={value}
+                visible={dragging}
+                placement="top"
+                key={index}
+            >
+                <Handle value={value} {...restProps} />
+            </Tooltip>
+        );
+    }
 
 
+    render() {
 
-    return (
-        <div>
-            <Card className={classes.card}>
-                <CardContent>
-                    <div style={{width: '100%'}}>
-                        <Typography type="body1" component="h2" >
-                        Offer 1 Performance
-                        </Typography>
+        return (
+            <div>
+                <Card>
+                    <CardContent>
+                        <div style={{width: '100%'}}>
+                            <Typography type="body1" component="h2">
+                                <strong>Plan Your Investment</strong>
+                            </Typography>
+                            <br/>
+                            <br/>
+                        </div>
+                        <Slider min={0} max={1000} defaultValue={200} handle={this.handle} onChange={(value)=>{this.handleChangeValue(value)}}/>
+
                         <br/>
                         <br/>
-                    </div>
-                    <LineChart width={600} height={300} data={data}
-                               margin={{top: 5, bottom: 5}}
-                               style={{margin: 'auto'}}>
-                        <XAxis dataKey="name" />
-                        <YAxis/>
-                        <CartesianGrid strokeDasharray="3 3"/>
-                        <Tooltip/>
-                        <Legend />
-                        <Line type="monotone" dataKey="pv" stroke="#2196f3" activeDot={{r: 8}}/>
-                        <Line type="monotone" dataKey="uv" stroke="#ff4081" />
-                    </LineChart>
+                        <LineChart width={600} height={300} data={this.state.data}
+                                   margin={{top: 5, bottom: 5}}
+                                   style={{margin: 'auto'}}>
+                            <XAxis dataKey="name"/>
+                            <YAxis/>
+                            <CartesianGrid strokeDasharray="3 3"/>
+                            <Recharts.Tooltip/>
+                            <Legend/>
+                            <Line type="monotone" dataKey="ROI" stroke="#2196f3" activeDot={{r: 8}}/>
+                            <Line type="monotone" dataKey="Users" stroke="#ff4081"/>
+                        </LineChart>
 
 
-
-                </CardContent>
-                <Divider />
-            </Card>
-        </div>
-    );
+                    </CardContent>
+                    <Divider/>
+                </Card>
+            </div>
+        );
+    }
 }
+
 export default withStyles(styles)(OfferPerformance);
