@@ -10,7 +10,7 @@ import 'rc-tooltip/assets/bootstrap.css';
 import 'rc-slider/assets/index.css';
 import Slider from 'rc-slider';
 import Tooltip from 'rc-tooltip';
-import dataList from './offerDataSampling';
+//import dataList from './offerDataSampling';
 
 const styles = theme => ({
     card: {
@@ -31,29 +31,49 @@ const styles = theme => ({
         color: theme.palette.text.secondary,
     },
 });
-
 class OfferPerformance extends React.Component {
     constructor(){
         super();
+        this.defaultData = [
+            {name: 'Week 1', Users: 1000, Sales: 2000, amt: 2400},
+            {name: 'Week 2', Users: 3000, Sales: 4008, amt: 2210},
+            {name: 'Week 3', Users: 4500, Sales: 5000, amt: 2290},
+            {name: 'Week 4', Users: 6000, Sales: 7000, amt: 2000},
+            {name: 'Week 5', Users: 5000, Sales: 4800, amt: 2181},
+            {name: 'Week 6', Users: 7000, Sales: 8000, amt: 2500},
+            {name: 'Week 7', Users: 8000, Sales: 9000, amt: 2100},
+        ];
         this.state = {
-            data : [
-                {name: 'Week 1', Users: 4000, ROI: 2400, amt: 2400},
-                {name: 'Week 2', Users: 3000, ROI: 1398, amt: 2210},
-                {name: 'Week 3', Users: 2000, ROI: 9800, amt: 2290},
-                {name: 'Week 4', Users: 2780, ROI: 3908, amt: 2000},
-                {name: 'Week 5', Users: 1890, ROI: 4800, amt: 2181},
-                {name: 'Week 6', Users: 2390, ROI: 3800, amt: 2500},
-                {name: 'Week 7', Users: 3490, ROI: 4300, amt: 2100},
-            ],
+            data : this.defaultData,
             slider: {
                 value: 200
             }
         }
     }
 
+    calculateNewData(sliderValue){
+        const newData = [
+            {name: 'Week 1', Users: 1000, Sales: 2000, amt: 2400},
+            {name: 'Week 2', Users: 3000, Sales: 4008, amt: 2210},
+            {name: 'Week 3', Users: 4500, Sales: 5000, amt: 2290},
+            {name: 'Week 4', Users: 6000, Sales: 7000, amt: 2000},
+            {name: 'Week 5', Users: 5000, Sales: 4800, amt: 2181},
+            {name: 'Week 6', Users: 7000, Sales: 8000, amt: 2500},
+            {name: 'Week 7', Users: 8000, Sales: 9000, amt: 2100},
+        ]
+        const changeFactor = sliderValue/10 + 1;
+        for(let key in newData){
+            let curr = newData[key];
+            curr.Users = curr.Users*changeFactor;
+            curr.Sales = curr.Sales*changeFactor;
+        }
+
+        return Object.keys(newData).map(key => newData[key]);
+    }
+
     handleChangeValue(value){
         const slVal = Math.ceil(1000/value/2);
-        const changedData =  dataList[slVal] ? dataList[slVal] : dataList['default'];
+        const changedData =  this.calculateNewData(slVal);
         this.setState({
             data: changedData,
             slider: {
@@ -103,7 +123,7 @@ class OfferPerformance extends React.Component {
                         <br/>
 
                         <Typography type="body1" component="h2">
-                            Weekly User engagement and ROI analysis
+                            Weekly User engagement and Sales analysis
                         </Typography>
                         <br/>
                         <br/>
@@ -115,7 +135,7 @@ class OfferPerformance extends React.Component {
                             <CartesianGrid strokeDasharray="3 3"/>
                             <Recharts.Tooltip/>
                             <Legend/>
-                            <Line type="monotone" dataKey="ROI" stroke="#2196f3" activeDot={{r: 8}}/>
+                            <Line type="monotone" dataKey="Sales" stroke="#2196f3" activeDot={{r: 8}}/>
                             <Line type="monotone" dataKey="Users" stroke="#ff4081"/>
                         </LineChart>
 
