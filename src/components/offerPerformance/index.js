@@ -50,15 +50,16 @@ function OfferPerformance(props) {
                         <br/>
                         <br/>
                     </div>
-                    <LineChart width={350} height={300} data={data}
-                               margin={{top: 5, bottom: 5}}>
-                        <XAxis dataKey="name" style={{margin: 'auto'}}/>
+                    <LineChart width={600} height={300} data={data}
+                               margin={{top: 5, bottom: 5}}
+                               style={{margin: 'auto'}}>
+                        <XAxis dataKey="name" />
                         <YAxis/>
                         <CartesianGrid strokeDasharray="3 3"/>
                         <Tooltip/>
                         <Legend />
-                        <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{r: 8}}/>
-                        <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                        <Line type="monotone" dataKey="pv" stroke="#2196f3" activeDot={{r: 8}}/>
+                        <Line type="monotone" dataKey="uv" stroke="#ff4081" />
                     </LineChart>
 
 
